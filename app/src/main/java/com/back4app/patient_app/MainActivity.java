@@ -13,6 +13,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -27,47 +29,47 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.textView);
 
-//        editor.remove("uniqueId");
-//        editor.commit();
+
+
         if(!pref.contains("uniqueId")){
 
             ParseObject patient = new ParseObject("Patient");
             patient.put("init", true);
-            String objectId;
-            patient.put("uniqueId", "uniqueIdssss");
+            String objectId = uniqueIdReturned();
+            patient.put("uniqueId", objectId);
             patient.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if(e == null){
-
                     }
                     else{
                     }
                 }
             });
-            
+
             objectId = patient.getString("uniqueId");
             editor.putString("uniqueId", objectId);
-            textView.setText("objectId");
+            textView.setText(objectId;
             editor.commit();
         }
         else {
             textView.setText(pref.getString("uniqueId", "didn't get unique id"));
-
         }
+    }
 
 
-//        ParseUser.logInInBackground("john1", "password", new LogInCallback() {
-//                    @Override
-//                    public void done(ParseUser user, ParseException e) {
-//                        EditText textView = findViewById(R.id.textView);
-//                        textView.setText(user.getString("strings"));
-//                    }
-//                }
-//        );
+    public String uniqueIdReturned(){
 
+        String validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder a = new StringBuilder();
+        Random rand = new Random();
+        while (a.length() < 7) {
+            int index = (int) (rand.nextFloat() * validChars.length());
+            a.append(validChars.charAt(index));
+        }
+        String uniqueid = a.toString();
 
-
+        return uniqueid;
     }
 
 }
