@@ -4,23 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences pref;
     SharedPreferences.Editor editor;
 
-    //ui
-    TextView textView;
+    // UI
+    TextView patientidTextView;
     private ListView listView;
 
     @Override
@@ -51,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         editor = pref.edit();
 
         //ui
-        textView = findViewById(R.id.textView);
+        patientidTextView = findViewById(R.id.patientidTextView);
         listView = findViewById(R.id.listView);
         items = new ArrayList<>();
 
@@ -81,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         return uniqueid;
     }
 
+    // Generates a unique id for the Alzheimer patient
     public void containsUniqueId(){
         String uniqueId ="";
 
@@ -93,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
 
             editor.putString("objectId", patientObject.getObjectId());
             editor.putString("uniqueId", uniqueId);
-            textView.setText(uniqueId);
+            patientidTextView.setText(uniqueId);
             editor.commit();
         }
         else {
-            textView.setText(pref.getString("uniqueId", "didn't get unique id"));
+            patientidTextView.setText(pref.getString("uniqueId", "didn't get unique id"));
         }
     }
 
