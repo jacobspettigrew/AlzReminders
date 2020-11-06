@@ -1,7 +1,24 @@
+/*
+HEADER
+FILE NAME:MainActivity.java
+TEAN NAME: Alzreminders
+BUGS:
+PEOPLE WHO WORKED ON: KYUNG CHEOL KOH ki
+PURPOSE:
+        GRABS THE DATA FROM THE BACK4APPS DATABASE
+        SHOW THE LIST OF TASKS FOR PATIENTS
+CODING STANDARD
+    NAME CONVENTION: CAMELCASE STARTING WITH LOWERCASE
+    GLOBAL VARIABLE: CAMELCASE STARTING WITH m
+
+*/
+
 package com.back4app.patient_app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,46 +39,65 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ArrayList<String> mItems;
+    private ArrayAdapter<String> mItemsAdapter;
+    private SwipeRefreshLayout mSwipeRefresh;
 
-    private ArrayList<String> items;
-    private ArrayAdapter<String> itemsAdapter;
-
-    //database
-    private ParseObject patientObject;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    //DATABASE
+    private ParseObject mPatientObject;
+    SharedPreferences mPref;
+    SharedPreferences.Editor mEditor;
 
     // UI
-    TextView patientidTextView;
-    private ListView listView;
+    TextView mPatientidTextView;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //database
-        pref = getApplicationContext().getSharedPreferences("Storage", 0);
-        editor = pref.edit();
+        //DATABASE
+        mPref = getApplicationContext().getSharedPreferences("Storage", 0);
+        mEditor = mPref.edit();
 
-        //ui
-        patientidTextView = findViewById(R.id.patientidTextView);
-        listView = findViewById(R.id.listView);
-        items = new ArrayList<>();
+        //UI
+        mPatientidTextView = findViewById(R.id.patientidTextView);
+        mListView = findViewById(R.id.listView);
+        mItems = new ArrayList<>();
+        mSwipeRefresh = findViewById(R.id.swiperefreshItems);
 
-        //if unique id exists
+        //CHECK IF UNIQUE ID EXISTS
         containsUniqueId();
 
-        items = new ArrayList<>();
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        mItems = new ArrayList<>();
+        mItemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mItems);
         findObjectId();
 
-        listView.setAdapter(itemsAdapter);
-        itemsAdapter.notifyDataSetChanged();
+        mListView.setAdapter(mItemsAdapter);
+        mItemsAdapter.notifyDataSetChanged();
         setUpListViewListener();
+
+        //REFRESH LISTENER
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mItems.clear();
+                findObjectId();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mSwipeRefresh.isRefreshing()) {
+                            mSwipeRefresh.setRefreshing(false);
+                        }
+                    }
+                }, 1000);
+            }
+        });
     }
 
-    //kiren's code to create an unique id
+    //GENERATE UNIQUE ID
     public String uniqueIdReturned(){
         String validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         String uniqueid;
@@ -75,66 +111,67 @@ public class MainActivity extends AppCompatActivity {
         return uniqueid;
     }
 
-    // Generates a unique id for the Alzheimer patient
+    // CHECK IF APP RUNS FOR THE FIRST TIME
     public void containsUniqueId(){
         String uniqueId ="";
 
-        if(!pref.contains("uniqueId")){
-            patientObject = new ParseObject("Patient");
-            patientObject.put("init", true);
+        if(!mPref.contains("uniqueId")){
+            mPatientObject = new ParseObject("Patient");
+            mPatientObject.put("init", true);
             uniqueId = uniqueIdReturned();
-            patientObject.put("uniqueId", uniqueId);
-            patientObject.saveInBackground();
+            mPatientObject.put("uniqueId", uniqueId);
+            mPatientObject.saveInBackground();
 
-            editor.putString("objectId", patientObject.getObjectId());
-            editor.putString("uniqueId", uniqueId);
-            patientidTextView.setText(uniqueId);
-            editor.commit();
+            mEditor.putString("objectId", mPatientObject.getObjectId());
+            mEditor.putString("uniqueId", uniqueId);
+            mPatientidTextView.setText(uniqueId);
+            mEditor.commit();
         }
         else {
-            patientidTextView.setText(pref.getString("uniqueId", "didn't get unique id"));
+            mPatientidTextView.setText(mPref.getString("uniqueId", "didn't get unique id"));
         }
     }
 
-
-
-    // Watches for a long press that will remove an task from the task list
+    // WATCHES FOR THE LONG PRESS TO DELETE
     private void setUpListViewListener() {
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Context context = getApplicationContext();
                 Toast.makeText(context, "Task Removed", Toast.LENGTH_LONG).show();
 
-                items.remove(position);
-                itemsAdapter.notifyDataSetChanged();
-
-                patientObject.put("arrayToDos", items);
-                patientObject.saveInBackground();
+                mItems.remove(position);
+                mItemsAdapter.notifyDataSetChanged();
+                //PUT DELETED LIST TO THE DATABASE
+                mPatientObject.put("arrayToDos", mItems);
+                mPatientObject.saveInBackground();
                 return true;
             }
         });
     }
 
+    //ITERATION TO FIND THE TASKS GIVEN THE UNIQUE ID
     private void findObjectId(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Patient");
-        query.whereEqualTo("uniqueId", pref.getString("uniqueId", "didn't get unique id"));
+        query.whereEqualTo("uniqueId", mPref.getString("uniqueId", "didn't get unique id"));
 
+        //BACKGROUND THREAD TO FIND THE UNIQUE ID
+        // ITERATE TO APPEND THE DATA TO THE ARRAYLISTS
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
                     if (objects.size() > 0) {
                         for (ParseObject object : objects) {
-                            patientObject = object;
+                            mPatientObject = object;
                             List<Object> item = object.getList("arrayToDos");
                             if (item == null) {
                             }
                             else {
                                 for (int i = 0; i < item.size(); i++) {
-                                    items.add(item.get(i).toString());
+                                    mItems.add(item.get(i).toString());
                                 }
-                                itemsAdapter.notifyDataSetChanged();
+                                mItemsAdapter.notifyDataSetChanged();
                             }
                         }
                     }

@@ -1,3 +1,13 @@
+/*
+HEADER
+FILE NAME:App.java
+TEAN NAME: Alzreminders
+BUGS:
+PEOPLE WHO WORKED ON: KYUNG CHEOL KOH
+PURPOSE:
+        THIS ACTIVITY CONNECTS TO THE DATABASE
+*/
+
 package com.back4app.patient_app;
 
 import com.parse.GetCallback;
@@ -21,8 +31,6 @@ public class App extends Application {
                 .clientKey(getString(R.string.back4app_client_key))
                 .server(getString(R.string.back4app_server_url))
                 .build()
-
-
         );
     }
 }
