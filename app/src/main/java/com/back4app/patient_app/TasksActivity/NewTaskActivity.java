@@ -1,4 +1,4 @@
-package com.back4app.patient_app;
+package com.back4app.patient_app.TasksActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,10 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.back4app.patient_app.R;
+
 public class NewTaskActivity extends AppCompatActivity {
-    public static final String EXTRA_REPLY = "com.example.android.patientApp.REPLY";
+    public static final String EXTRA_REPLY_Tasks = "com.example.android.patientApp.REPLY";
 
     private EditText mEditTaskView;
 
@@ -29,7 +31,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
                 } else {
                     String Task = mEditTaskView.getText().toString();
-                    replyIntent.putExtra(EXTRA_REPLY, Task);
+                    replyIntent.putExtra(EXTRA_REPLY_Tasks, Task);
                     setResult(RESULT_OK, replyIntent);
                 }
                 finish();

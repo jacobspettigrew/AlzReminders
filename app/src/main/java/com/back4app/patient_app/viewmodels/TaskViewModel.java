@@ -1,9 +1,12 @@
-package com.back4app.patient_app;
+package com.back4app.patient_app.viewmodels;
 
 import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.back4app.patient_app.models.Family;
+import com.back4app.patient_app.models.Task;
+import com.back4app.patient_app.repositories.TaskRepository;
 import com.parse.ParseException;
 
 import java.util.List;
@@ -19,7 +22,7 @@ public class TaskViewModel extends AndroidViewModel {
         mAllTasks = mRepository.getAllTasks();
     }
 
-    LiveData<List<Task>> getAllTasks() { return mAllTasks; }
+    public LiveData<List<Task>> getAllTasks() { return mAllTasks; }
 
     public void deleteAll() {
         mRepository.deleteAll();

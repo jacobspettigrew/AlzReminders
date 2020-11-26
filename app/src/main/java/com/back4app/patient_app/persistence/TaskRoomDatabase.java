@@ -27,7 +27,7 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
     private static TaskRoomDatabase INSTANCE;
 
 
-    static TaskRoomDatabase getDatabase(final Context context) {
+    public static TaskRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (TaskRoomDatabase.class) {
                 if (INSTANCE == null) {

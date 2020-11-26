@@ -13,9 +13,8 @@ CODING STANDARD
 
 */
 
-package com.back4app.patient_app;
+package com.back4app.patient_app.TasksActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -26,16 +25,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -43,6 +37,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.back4app.patient_app.R;
+import com.back4app.patient_app.adapters.TaskListAdapter;
+import com.back4app.patient_app.models.Task;
+import com.back4app.patient_app.viewmodels.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -59,8 +57,6 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     static ArrayList<String> Tasks;
-    private ArrayList<String> mItems;
-    private ArrayAdapter<String> mItemsAdapter;
     private SwipeRefreshLayout mSwipeRefresh;
 
     //DATABASE
@@ -70,11 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
     // UI
     TextView mPatientidTextView;
-    private ListView mListView;
     TaskListAdapter adapter;
 
     public static final int NEW_Task_ACTIVITY_REQUEST_CODE = 1;
-
     private TaskViewModel mTaskViewModel;
 
     @Override
@@ -82,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new TaskListAdapter(this);
@@ -113,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mPatientidTextView = findViewById(R.id.uniqueID);
+
 
         //DATABASE
         mPref = getApplicationContext().getSharedPreferences("Storage", 0);
@@ -121,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
         //CHECK IF UNIQUE ID EXISTS
         containsUniqueId();
-
 
         //swipe to delete
         ItemTouchHelper helper = new ItemTouchHelper(
@@ -147,10 +140,7 @@ public class MainActivity extends AppCompatActivity {
                         mTaskViewModel.deeletaTaskToDatabse(myTask,position);
                     }
                 });
-
         helper.attachToRecyclerView(recyclerView);
-
-
 
                 //REFRESH LISTENER
         mSwipeRefresh = findViewById(R.id.swiperefreshItem);
@@ -170,9 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 }, 1000);
             }
         });
-
     }
-
 
 
     @Override
@@ -194,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_Task_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Task Task = new Task(data.getStringExtra(NewTaskActivity.EXTRA_REPLY));
+            Task Task = new Task(data.getStringExtra(NewTaskActivity.EXTRA_REPLY_Tasks));
             mTaskViewModel.insert(Task);
             try {
                 mTaskViewModel.insertToDatabase(Task);
@@ -237,31 +225,29 @@ public class MainActivity extends AppCompatActivity {
 
             mEditor.putString("objectId", mPatientObject.getObjectId());
             mEditor.putString("uniqueId", uniqueId);
-            mPatientidTextView.setText(uniqueId);
+
             mEditor.commit();
-        } else {
-            mPatientidTextView.setText(mPref.getString("uniqueId", "didn't get unique id"));
         }
     }
 
     // WATCHES FOR THE LONG PRESS TO DELETE
-    private void setUpListViewListener() {
-        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Context context = getApplicationContext();
-                Toast.makeText(context, "Task Removed", Toast.LENGTH_LONG).show();
-
-                mItems.remove(position);
-                mItemsAdapter.notifyDataSetChanged();
-                //PUT DELETED LIST TO THE DATABASE
-                mPatientObject.put("arrayToDos", mItems);
-
-                mPatientObject.saveInBackground();
-                return true;
-            }
-        });
-    }
+//    private void setUpListViewListener() {
+//        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Context context = getApplicationContext();
+//                Toast.makeText(context, "Task Removed", Toast.LENGTH_LONG).show();
+//
+//                mItems.remove(position);
+//                mItemsAdapter.notifyDataSetChanged();
+//                //PUT DELETED LIST TO THE DATABASE
+//                mPatientObject.put("arrayToDos", mItems);
+//
+//                mPatientObject.saveInBackground();
+//                return true;
+//            }
+//        });
+//    }
 
     //ITERATION TO FIND THE TASKS GIVEN THE UNIQUE ID
     private void findObjectId() {

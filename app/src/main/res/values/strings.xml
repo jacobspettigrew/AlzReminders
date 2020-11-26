@@ -8,6 +8,9 @@
 
     <string name="app_name">Patient App</string>
 
+    <string name="menu_name_task">Tasks</string>
+    <string name="menu_name_family_reminder">Family Reminder</string>
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
