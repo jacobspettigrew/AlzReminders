@@ -1,4 +1,4 @@
-package com.back4app.patient_app;
+package com.back4app.patient_app.models;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

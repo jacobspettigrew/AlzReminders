@@ -1,4 +1,4 @@
-package com.back4app.patient_app;
+package com.back4app.patient_app.repositories;
 
 import android.app.Application;
 import androidx.lifecycle.LiveData;
@@ -7,14 +7,14 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.back4app.patient_app.models.Task;
+import com.back4app.patient_app.persistence.TaskDao;
+import com.back4app.patient_app.persistence.TaskRoomDatabase;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.parse.Parse.getApplicationContext;
@@ -27,7 +27,7 @@ public class TaskRepository {
     SharedPreferences mPref;
     SharedPreferences.Editor mEditor;
 
-    TaskRepository(Application application) {
+    public TaskRepository(Application application) {
         TaskRoomDatabase db = TaskRoomDatabase.getDatabase(application);
         mTaskDao = db.TaskDao();
         getTaskFromDatabase();
@@ -35,7 +35,7 @@ public class TaskRepository {
         mAllTasks = mTaskDao.getAllTasks();
     }
 
-    LiveData<List<Task>> getAllTasks() {
+    public LiveData<List<Task>> getAllTasks() {
         return mAllTasks;
     }
 
@@ -105,7 +105,6 @@ public class TaskRepository {
                     }
                 }
         );
-
     }
 
     public void getTaskFromDatabase(){

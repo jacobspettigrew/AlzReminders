@@ -1,4 +1,4 @@
-package com.back4app.patient_app;
+package com.back4app.patient_app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,13 +8,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.back4app.patient_app.R;
+import com.back4app.patient_app.models.Task;
+
 import java.util.List;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskViewHolder> {
     private final LayoutInflater mInflater;
     private List<Task> mTasks; // Cached copy of Tasks
 
-    TaskListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+    public TaskListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
 
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,7 +36,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         }
     }
 
-    void setTasks(List<Task> Tasks){
+    public void setTasks(List<Task> Tasks){
         mTasks = Tasks;
         notifyDataSetChanged();
     }

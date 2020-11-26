@@ -1,4 +1,4 @@
-package com.back4app.patient_app;
+package com.back4app.patient_app.persistence;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,10 +8,13 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 
+import com.back4app.patient_app.models.Task;
+
 import java.util.List;
 
 @Dao
 public interface TaskDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Task task);
     @Query("DELETE FROM task_table")
