@@ -12,7 +12,20 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "family_table")
 public class Family implements Parcelable {
 
-    @PrimaryKey
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+
+    public int getId() {
+        return id;
+    }
+
+
+
     @ColumnInfo(name = "name")
     @NonNull
     private String mName;
@@ -29,6 +42,7 @@ public class Family implements Parcelable {
 
 
     protected Family(Parcel in) {
+        id = in.readInt();
         mName = in.readString();
         mRelationship = in.readString();
         mDescription = in.readString();
@@ -48,7 +62,7 @@ public class Family implements Parcelable {
     };
 
 
-    public Family(@NonNull String name, String relationship, String description, String image_url) {
+    public Family( String name, String relationship, String description, String image_url) {
         this.mName = name;
         this.mRelationship = relationship;
         this.mDescription = description;
@@ -72,6 +86,7 @@ public class Family implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(mName);
         parcel.writeString(mDescription);
         parcel.writeString(mRelationship);
@@ -98,8 +113,21 @@ public class Family implements Parcelable {
         return this.mImage_url;
     }
 
+
+
     public void setImage_url(String image_url) {
         this.mImage_url = image_url;
+    }
+
+    @Override
+    public String toString() {
+        return "Family{" +
+                "id=" + getId() +
+                ", mName='" + mName + '\'' +
+                ", mRelationship='" + mRelationship + '\'' +
+                ", mDescription='" + mDescription + '\'' +
+                ", mImage_url='" + mImage_url + '\'' +
+                '}';
     }
 
 }

@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import com.back4app.patient_app.models.Family;
 
 
-@Database(entities = {Family.class}, version = 2, exportSchema = false)
+@Database(entities = {Family.class}, version = 5, exportSchema = false)
 public abstract class FamilyRoomDatabase extends RoomDatabase {
 
     public abstract FamilyDao FamilyDao();

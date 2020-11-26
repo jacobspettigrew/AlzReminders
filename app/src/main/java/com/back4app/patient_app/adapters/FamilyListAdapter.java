@@ -17,13 +17,21 @@ public class FamilyListAdapter extends RecyclerView.Adapter<FamilyListAdapter.Fa
 
     private final LayoutInflater mInflater;
     private List<Family> mFamilies; // Cached copy of Familys
+    private OnItemClickListener mListener;
 
     public FamilyListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
 
     @Override
     public FamilyListAdapter.FamilyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new FamilyListAdapter.FamilyViewHolder(itemView);
+        return new FamilyListAdapter.FamilyViewHolder(itemView, mListener);
     }
 
     @Override
@@ -31,6 +39,9 @@ public class FamilyListAdapter extends RecyclerView.Adapter<FamilyListAdapter.Fa
         if (mFamilies != null) {
             Family current = mFamilies.get(position);
             holder.FamilyItemView.setText(current.getName());
+
+
+
         } else {
             // Covers the case of data not being ready yet.
             holder.FamilyItemView.setText("No Family");
@@ -58,9 +69,21 @@ public class FamilyListAdapter extends RecyclerView.Adapter<FamilyListAdapter.Fa
     class FamilyViewHolder extends RecyclerView.ViewHolder {
         private final TextView FamilyItemView;
 
-        private FamilyViewHolder(View itemView) {
+        private FamilyViewHolder(View itemView, OnItemClickListener listener) {
             super(itemView);
             FamilyItemView = itemView.findViewById(R.id.textView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener  != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

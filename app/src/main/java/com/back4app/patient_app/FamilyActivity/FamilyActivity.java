@@ -2,6 +2,7 @@ package com.back4app.patient_app.FamilyActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,14 +27,15 @@ import java.util.List;
 
 public class FamilyActivity extends AppCompatActivity {
 
+    private static final String TAG = "FamilyActivity" ;
     static ArrayList<String> Families;
-    private SwipeRefreshLayout mSwipeRefresh;
+
 
 
 
     // UI
     TextView mPatientidTextView;
-    FamilyListAdapter adapter;
+    FamilyListAdapter mAdapter;
 
     public static final int NEW_Family_ACTIVITY_REQUEST_CODE = 1;
     private FamilyViewModel mFamilyViewModel;
@@ -48,9 +50,28 @@ public class FamilyActivity extends AppCompatActivity {
 //        setSupportActionBar(toolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        adapter = new FamilyListAdapter(this);
-        recyclerView.setAdapter(adapter);
+        mAdapter = new FamilyListAdapter(this);
+        recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mAdapter.setOnItemClickListener(new FamilyListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Log.d(TAG, "onItemClick: " + position  + "  is cliked");
+                Intent intent = new Intent(FamilyActivity.this, NewFamilyActivity.class);
+
+                Family family = mAdapter.getFamilyAtPosition(position);
+                intent.putExtra("mode", "edit" );
+                intent.putExtra("family", family);
+
+
+                startActivityForResult(intent, 1);
+                mFamilyViewModel.deleteFamily(family);
+
+            }
+        });
+
+
 
         // Get a new or existing ViewModel from the ViewModelProvider.
         mFamilyViewModel = ViewModelProviders.of(this).get(FamilyViewModel.class);
@@ -61,21 +82,23 @@ public class FamilyActivity extends AppCompatActivity {
         mFamilyViewModel.getAllFamilies().observe(this, new Observer<List<Family>>() {
             @Override
             public void onChanged(@Nullable final List<Family> Families) {
-                // Update the cached copy of the Familys in the adapter.
-                adapter.setmFamilies(Families);
+                // Update the cached copy of the Families in the adapter.
+                mAdapter.setmFamilies(Families);
             }
         });
 
+
+        //Floating button button
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(FamilyActivity.this, NewFamilyActivity.class);
-                startActivityForResult(intent, NEW_Family_ACTIVITY_REQUEST_CODE);
+                Family family = new Family("name", "Friend", "Description", "URi" );
+                intent.putExtra("mode", "add" );
+                startActivityForResult(intent, 1);
             }
         });
-
-
 
 
         //swipe to delete
@@ -93,7 +116,7 @@ public class FamilyActivity extends AppCompatActivity {
                     public void onSwiped(RecyclerView.ViewHolder viewHolder,
                                          int direction) {
                         int position = viewHolder.getAdapterPosition();
-                        Family myFamily = adapter.getFamilyAtPosition(position);
+                        Family myFamily = mAdapter.getFamilyAtPosition(position);
                         Toast.makeText(FamilyActivity.this, "Deleting " +
                                 myFamily.getName(), Toast.LENGTH_LONG).show();
 
@@ -102,7 +125,6 @@ public class FamilyActivity extends AppCompatActivity {
                     }
                 });
         helper.attachToRecyclerView(recyclerView);
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,10 +132,15 @@ public class FamilyActivity extends AppCompatActivity {
 
         if (requestCode == NEW_Family_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Family family = data.getParcelableExtra(NewFamilyActivity.EXTRA_REPLY_Family);
-
             mFamilyViewModel.insert(family);
-
-        } else {
+            Log.d(TAG, "onActivityResult: " + family.toString());
+        }
+//        else if{
+//            Family family = data.getParcelableExtra(NewFamilyActivity.EXTRA_REPLY_Family);
+//            mFamilyViewModel.deleteFamily();
+//            Log.d(TAG, "onActivityResult: " + family.toString());
+//        }
+        else {
             Toast.makeText(
                     getApplicationContext(),
                     R.string.empty_not_saved,
