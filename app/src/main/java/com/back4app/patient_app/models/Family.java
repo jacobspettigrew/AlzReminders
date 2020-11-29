@@ -4,27 +4,31 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
+import static androidx.room.Entity.*;
+
 @Entity(tableName = "family_table")
 public class Family implements Parcelable {
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
 
     public int getId() {
         return id;
     }
 
-
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @ColumnInfo(name = "name")
     @NonNull
@@ -68,11 +72,15 @@ public class Family implements Parcelable {
         this.mDescription = description;
         this.mImage_url = image_url;
     }
-
     @Ignore
-    public Family(@NonNull String name){
+    public Family(int id, String name, String relationship, String description, String image_url) {
+        this.id = id;
         this.mName = name;
+        this.mRelationship = relationship;
+        this.mDescription = description;
+        this.mImage_url = image_url;
     }
+
 
     @NonNull
     public String getName() {
@@ -128,6 +136,22 @@ public class Family implements Parcelable {
                 ", mDescription='" + mDescription + '\'' +
                 ", mImage_url='" + mImage_url + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(getClass() == null){
+            return false;
+        }
+        Family family = (Family) obj;
+        return family.getId() == getId()
+                && family.getName() == getName()
+                && family.getDescription() == getDescription()
+                && family.getRelationship() == getRelationship()
+                && family.getImage_url() == getImage_url();
     }
 
 }

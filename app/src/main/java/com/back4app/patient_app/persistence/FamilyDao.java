@@ -17,11 +17,13 @@ import java.util.List;
 @Dao
 public interface FamilyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Family family);
+    long insert(Family family);
     @Query("DELETE FROM family_table")
     void deleteAll();
     @Delete
     void deleteFamily(Family family);
+    @Update
+    void update(Family ... family);
 
 
     @Query("SELECT * from family_table ORDER BY name ASC")

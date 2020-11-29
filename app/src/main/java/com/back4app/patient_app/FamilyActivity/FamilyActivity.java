@@ -66,7 +66,7 @@ public class FamilyActivity extends AppCompatActivity {
 
 
                 startActivityForResult(intent, 1);
-                mFamilyViewModel.deleteFamily(family);
+                //mFamilyViewModel.deleteFamily(family);
 
             }
         });
@@ -129,11 +129,19 @@ public class FamilyActivity extends AppCompatActivity {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        Log.d(TAG, "onActivityResult: " + requestCode + " " + resultCode);
         if (requestCode == NEW_Family_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Family family = data.getParcelableExtra(NewFamilyActivity.EXTRA_REPLY_Family);
+            family.setId(mAdapter.getItemCount());
             mFamilyViewModel.insert(family);
             Log.d(TAG, "onActivityResult: " + family.toString());
+        }
+        else if(requestCode == NEW_Family_ACTIVITY_REQUEST_CODE && resultCode == 2){
+            Log.d(TAG, "onActivityResult: it is editing");
+            Family family = data.getParcelableExtra(NewFamilyActivity.EXTRA_REPLY_Family);
+
+            Log.d(TAG, "onActivityResult: " + family.toString());
+            mFamilyViewModel.update(family);
         }
 //        else if{
 //            Family family = data.getParcelableExtra(NewFamilyActivity.EXTRA_REPLY_Family);

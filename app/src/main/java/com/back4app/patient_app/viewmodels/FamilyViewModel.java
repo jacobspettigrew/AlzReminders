@@ -36,5 +36,9 @@ public class FamilyViewModel extends AndroidViewModel {
 
     public void insert(Family Family) { mRepository.insert(Family); }
 
+    public void update(Family Family) { mRepository.update(Family); }
+
+
+
 
 }

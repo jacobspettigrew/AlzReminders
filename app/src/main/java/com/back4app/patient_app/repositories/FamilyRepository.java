@@ -43,6 +43,10 @@ public class FamilyRepository {
         new FamilyRepository.insertAsyncFamily(mFamilyDao).execute(family);
     }
 
+    public void update (Family family){
+        new FamilyRepository.updateAsyncFamily(mFamilyDao).execute(family);
+    }
+
     public void deleteAll() {
         new FamilyRepository.deleteAllFamiliesAsyncTask(mFamilyDao).execute();
     }
@@ -65,6 +69,22 @@ public class FamilyRepository {
         @Override
         protected Void doInBackground(final Family... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class updateAsyncFamily extends AsyncTask<Family, Void, Void> {
+
+        private FamilyDao mAsyncTaskDao;
+
+        updateAsyncFamily(FamilyDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+
+        @Override
+        protected Void doInBackground(final Family... params) {
+            mAsyncTaskDao.update(params[0]);
             return null;
         }
     }

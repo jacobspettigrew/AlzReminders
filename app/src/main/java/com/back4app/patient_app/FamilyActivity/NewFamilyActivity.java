@@ -36,6 +36,7 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
     EditText mEditRelationship;
     EditText mEditDescription;
     String url;
+    int mId;
 
     Button mSaveProfileBtn;
 
@@ -57,10 +58,12 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
             mEditNameView.setText(family.getName());
             mEditRelationship.setText(family.getRelationship());
             mEditDescription.setText(family.getDescription());
+            mId = family.getId();
         }
 
         Button mSaveProfileBtn = findViewById(R.id.save_profile);
         mSaveProfileBtn.setOnClickListener(this);
+
 
     }
 
@@ -70,13 +73,25 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
             startActivityForResult(intent, SELECTED_PHOTO);
     }
 
+
     public void goToListActivity(String mode){
         Intent replyIntent = new Intent();
         if (TextUtils.isEmpty(mEditNameView.getText())) {
             setResult(RESULT_CANCELED, replyIntent);
-        } 
+        }
 
-      
+        else if(mode.equals("edit")){
+            String name = mEditNameView.getText().toString();
+            String relationship = mEditRelationship.getText().toString();
+            String description = mEditDescription.getText().toString();
+
+            Family family = new Family(mId, name,relationship,description,url ) ;
+
+            replyIntent.putExtra(EXTRA_REPLY_Family, family);
+
+            setResult(2, replyIntent);
+        }
+
         else {
             String name = mEditNameView.getText().toString();
             String relationship = mEditRelationship.getText().toString();
