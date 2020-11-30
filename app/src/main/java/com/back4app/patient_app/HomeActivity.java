@@ -1,7 +1,9 @@
 package com.back4app.patient_app;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -9,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.back4app.patient_app.FamilyActivity.FamilyActivity;
 import com.back4app.patient_app.TasksActivity.MainActivity;
@@ -31,6 +35,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //ASKING FOR READ PERMISSIONS
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
+
+        }
+
+        else {
+            ActivityCompat.requestPermissions(this, new String[]
+                    { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 

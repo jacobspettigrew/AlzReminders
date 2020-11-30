@@ -1,6 +1,12 @@
 package com.back4app.patient_app.FamilyActivity;
 
+import android.Manifest;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,12 +15,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.back4app.patient_app.R;
 import com.back4app.patient_app.adapters.FamilyListAdapter;
@@ -25,11 +33,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.back4app.patient_app.FamilyActivity.NewFamilyActivity.CHANNEL_ID1;
+
 public class FamilyActivity extends AppCompatActivity {
 
     private static final String TAG = "FamilyActivity" ;
     static ArrayList<String> Families;
-
 
 
 
@@ -44,6 +53,8 @@ public class FamilyActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
+
+
 
 
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -156,4 +167,5 @@ public class FamilyActivity extends AppCompatActivity {
         }
     }
 
+    
 }
