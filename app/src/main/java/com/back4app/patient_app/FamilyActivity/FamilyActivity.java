@@ -78,7 +78,6 @@ public class FamilyActivity extends AppCompatActivity {
         });
 
 
-
         // Get a new or existing ViewModel from the ViewModelProvider.
         mFamilyViewModel = ViewModelProviders.of(this).get(FamilyViewModel.class);
 
@@ -132,6 +131,7 @@ public class FamilyActivity extends AppCompatActivity {
                 });
         helper.attachToRecyclerView(recyclerView);
     }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

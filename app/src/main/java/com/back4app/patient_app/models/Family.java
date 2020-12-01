@@ -17,8 +17,6 @@ import static androidx.room.Entity.*;
 @Entity(tableName = "family_table")
 public class Family implements Parcelable {
 
-
-
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -34,7 +32,6 @@ public class Family implements Parcelable {
     @NonNull
     private String mName;
 
-
     @ColumnInfo(name = "relationship")
     private String mRelationship;
 
@@ -43,7 +40,6 @@ public class Family implements Parcelable {
 
     @ColumnInfo(name = "image_url")
     private String mImage_url;
-
 
     protected Family(Parcel in) {
         id = in.readInt();
@@ -80,7 +76,6 @@ public class Family implements Parcelable {
         this.mDescription = description;
         this.mImage_url = image_url;
     }
-
 
     @NonNull
     public String getName() {

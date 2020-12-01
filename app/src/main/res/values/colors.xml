@@ -4,7 +4,6 @@
 <!--    <color name="colorPrimaryDark">#303F9F</color>-->
 <!--    <color name="colorAccent">#FF4081</color>-->
 
-
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryLight">#64b5f6</color>
     <color name="colorPrimaryDark">#1976D2</color>
@@ -13,5 +12,4 @@
     <color name="colorScreenBackground">#FAD5E1</color>
     <color name="colorTextHint">#E0E0E0</color>
     <color name="white">#FFFFFFFF</color>
-
 </resources>
