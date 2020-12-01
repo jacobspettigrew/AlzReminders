@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -21,15 +22,18 @@ public class ReminderBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         //Notification
-        Log.d(TAG, "onReceive: is it receiving");
+        Toast.makeText(context, "알람~!!", Toast.LENGTH_SHORT).show();    // AVD 확인용
+        Log.e("Alarm","알람입니다.");    // 로그 확인용
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID1)
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setContentTitle("textTitle")
                 .setContentText("str")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(0,builder.build());
     }
 }
+
+

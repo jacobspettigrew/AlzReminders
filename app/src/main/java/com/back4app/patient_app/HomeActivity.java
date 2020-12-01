@@ -1,14 +1,19 @@
 package com.back4app.patient_app;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.util.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -48,6 +53,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -70,6 +78,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         containsUniqueId();
 
     }
+
+
+
 
     //LISTS OF FUNCTIONS TO GO TO DIFFERENT ACTIVITIES
     public void goToTasks(View view){

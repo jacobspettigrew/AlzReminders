@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,7 @@ import com.back4app.patient_app.models.Family;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 
 
 import static com.back4app.patient_app.FamilyActivity.FamilyActivity.NEW_Family_ACTIVITY_REQUEST_CODE;
@@ -55,6 +57,9 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
     EditText mEditDescription;
     String url;
     int mId;
+    TimePicker mTimePicker;
+    private AlarmManager alarmManager;
+    private int hour, minute;
 
     Button mSaveProfileBtn;
 
@@ -108,34 +113,63 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         Button mSaveProfileBtn = findViewById(R.id.save_profile);
         mSaveProfileBtn.setOnClickListener(this);
 
-        Button notificationBtn = findViewById(R.id.notifiaction_btn);
+       // Button notificationBtn = findViewById(R.id.notifiaction_btn);
 
 
         //Notification
         createNotificationChannel();
-         notificationBtn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 String str = "message";
-
-                 Intent intent = new Intent(NewFamilyActivity.this,ReminderBroadcast.class);
-                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                 PendingIntent pendingIntent = PendingIntent.getActivity(NewFamilyActivity.this, 0, intent, 0);
-
-                 AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                         SystemClock.elapsedRealtime() +
-                                 3 * 1000, pendingIntent);
-
-             }
-         });
-
-
-
-
+        mTimePicker=findViewById(R.id.tp_timepicker);
+//         notificationBtn.setOnClickListener(new View.OnClickListener() {
+//             @Override
+//             public void onClick(View view) {
+//                 String str = "message";
+//                 Log.d(TAG, "onClick: is it clikcing");
+//
+//                 Intent intent = new Intent(NewFamilyActivity.this,ReminderBroadcast.class);
+//                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                 PendingIntent pendingIntent = PendingIntent.getActivity(NewFamilyActivity.this, 0, intent, 0);
+//
+//                 AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//
+//                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                         SystemClock.elapsedRealtime() +
+//                                 3 * 1000, pendingIntent);
+//
+//             }
+//         });
 
 
+    }
+
+
+    public void regist(View view) {
+
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0,intent, 0);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            hour=mTimePicker.getHour();
+            minute=mTimePicker.getMinute();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        alarmManager =
+                (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        // 지정한 시간에 매일 알림
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  AlarmManager.INTERVAL_DAY, pIntent);
+
+    }// regist()..
+
+    public void unregist(View view) {
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.cancel(pIntent);
     }
 
     private void createNotificationChannel() {
