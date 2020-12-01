@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TasksActivity.MainActivity"
-
-    >
+    tools:context=".TasksActivity.MainActivity">
 
 
 
@@ -16,24 +14,18 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.Androidfundamentals.AppBarOverlay">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Androidfundamentals.PopupOverlay" />
-
-
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:background="?attr/colorPrimary"-->
+<!--            app:popupTheme="@style/Theme.Androidfundamentals.PopupOverlay" />-->
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
         layout="@layout/content_main"
         android:layout_height="677dp" />
-
-
-
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -42,6 +34,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_baseline_add_24" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

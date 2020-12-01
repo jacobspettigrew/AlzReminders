@@ -16,14 +16,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="143dp"
         android:layout_marginLeft="143dp"
-        android:layout_marginTop="50dp"
         android:layout_marginEnd="140dp"
         android:layout_marginRight="140dp"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="5dp"
         android:src="@drawable/ic_default_profile_background"
         app:layout_constraintBottom_toTopOf="@+id/Set_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -35,15 +34,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="157dp"
         android:layout_marginLeft="157dp"
-        android:layout_marginTop="21dp"
         android:layout_marginEnd="166dp"
         android:layout_marginRight="166dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:onClick="getCamera"
         android:text="set image"
         app:layout_constraintBottom_toTopOf="@+id/profile_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.857"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_gallery" />
 
@@ -55,10 +53,10 @@
         android:layout_marginStart="100dp"
 
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="76dp"
         android:layout_marginRight="76dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="7dp"
 
         android:backgroundTint="#090000"
         android:hint="Name"
@@ -68,7 +66,7 @@
         android:textColorHint="#8A8A8A"
         app:layout_constraintBottom_toTopOf="@+id/profile_relationship"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Set_image" />
 
@@ -80,11 +78,11 @@
         android:layout_marginStart="100dp"
 
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="7dp"
         android:layout_marginEnd="76dp"
         android:layout_marginRight="76dp"
 
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="7dp"
         android:backgroundTint="#090000"
         android:hint="Relationship"
         android:inputType="text"
@@ -93,7 +91,7 @@
         android:textColorHint="#8A8A8A"
         app:layout_constraintBottom_toTopOf="@+id/profile_description"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_name" />
 
@@ -105,7 +103,7 @@
         android:layout_marginStart="100dp"
 
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="7dp"
         android:layout_marginEnd="76dp"
         android:layout_marginRight="76dp"
 
@@ -127,51 +125,92 @@
         android:id="@+id/save_profile"
         android:layout_width="78dp"
         android:layout_height="49dp"
-        android:layout_marginStart="157dp"
-        android:layout_marginLeft="157dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="166dp"
-        android:layout_marginRight="166dp"
-        android:text="Save Profile"
+        android:layout_marginStart="100dp"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="76dp"
+        android:text="Save Profile"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_description" />
+        app:layout_constraintTop_toBottomOf="@+id/tp_timepicker" />
 
     <TimePicker
         android:id="@+id/tp_timepicker"
-        android:layout_width="324dp"
-        android:layout_height="131dp"
-        android:layout_marginTop="27dp"
+        android:layout_width="367dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="20dp"
         android:timePickerMode="spinner"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile_description" />
 
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="256dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginLeft="46dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginRight="47dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/save_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tp_timepicker"
+        app:layout_constraintVertical_bias="0.0">
+
+
+        <RadioButton
+            android:id="@+id/radio_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Hour" />
+
+        <RadioButton
+            android:id="@+id/radio_half_day"
+            android:layout_width="98dp"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Half Day" />
+
+        <RadioButton
+            android:id="@+id/radio_day"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
+            android:text="Day" />
+    </RadioGroup>
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="24dp"
-        android:onClick="register"
-        android:text="등록"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button2"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tp_timepicker" />
+        android:layout_marginEnd="88dp"
+        android:layout_marginRight="88dp"
+        android:onClick="unregister"
+        android:text="unregister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:onClick="unregister"
-        android:text="해지"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="163dp"
+        android:layout_marginRight="163dp"
+        android:onClick="register"
+        android:text="Button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/tp_timepicker" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/save_profile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

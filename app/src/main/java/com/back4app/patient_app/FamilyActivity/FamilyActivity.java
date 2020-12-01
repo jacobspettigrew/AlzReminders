@@ -54,9 +54,6 @@ public class FamilyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-
-
-
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -75,9 +72,7 @@ public class FamilyActivity extends AppCompatActivity {
                 intent.putExtra("mode", "edit" );
                 intent.putExtra("family", family);
 
-
                 startActivityForResult(intent, 1);
-                //mFamilyViewModel.deleteFamily(family);
 
             }
         });
@@ -154,11 +149,6 @@ public class FamilyActivity extends AppCompatActivity {
             Log.d(TAG, "onActivityResult: " + family.toString());
             mFamilyViewModel.update(family);
         }
-//        else if{
-//            Family family = data.getParcelableExtra(NewFamilyActivity.EXTRA_REPLY_Family);
-//            mFamilyViewModel.deleteFamily();
-//            Log.d(TAG, "onActivityResult: " + family.toString());
-//        }
         else {
             Toast.makeText(
                     getApplicationContext(),

@@ -21,9 +21,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TimePicker;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -60,7 +62,7 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
     TimePicker mTimePicker;
     private AlarmManager alarmManager;
     private int hour, minute;
-
+    private long interval;
     Button mSaveProfileBtn;
 
     @Override
@@ -71,15 +73,9 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         mEditNameView = findViewById(R.id.profile_name);
         mEditRelationship = findViewById(R.id.profile_relationship);
         mEditDescription = findViewById(R.id.profile_description);
-
         Intent intent = getIntent();
 
-
             //this code will be executed on devices running ICS or later
-
-
-
-
         if(intent.getStringExtra("mode").equals("edit")){
             Family family = intent.getParcelableExtra("family");
             mEditNameView.setText(family.getName());
@@ -106,31 +102,32 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
             catch (NullPointerException e){
                 e.printStackTrace();
             }
-
-
         }
 
         Button mSaveProfileBtn = findViewById(R.id.save_profile);
         mSaveProfileBtn.setOnClickListener(this);
 
-       // Button notificationBtn = findViewById(R.id.notifiaction_btn);
-
 
         //Notification
         createNotificationChannel();
         mTimePicker=findViewById(R.id.tp_timepicker);
-
     }
 
 
     public void register(View view) {
-
+    createNotificationChannel();
         Intent intent = new Intent(this, ReminderBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent, 0);
 
+        String  name = mEditNameView.getText().toString();
+        String descrption = mEditDescription.getText().toString();
+        intent.putExtra("name", name);
+        intent.putExtra("description", descrption);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Log.d(TAG, "register: " + name + descrption );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            hour=mTimePicker.getHour();
-            minute=mTimePicker.getMinute();
+            hour = mTimePicker.getHour();
+            minute = mTimePicker.getMinute();
         }
 
         Calendar calendar = Calendar.getInstance();
@@ -141,14 +138,26 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         alarmManager =
                 (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 *10 , pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() , interval , pendingIntent);
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void unregister(View view) {
+        try{
         Intent intent = new Intent(this, ReminderBroadcast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.cancel(pendingIntent);
+
+//            NotificationManager notificationManager =
+//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//// The id of the channel.
+//            String id = "my_channel_01";
+//            notificationManager.deleteNotificationChannel(id);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void createNotificationChannel() {
@@ -157,7 +166,7 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID1, "name", importance);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID1, "new channel1", importance);
             channel.setDescription("some Descriptions here");
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
@@ -178,14 +187,12 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         if (TextUtils.isEmpty(mEditNameView.getText())) {
             setResult(RESULT_CANCELED, replyIntent);
         }
-
         else if(mode.equals("edit")){
             String name = mEditNameView.getText().toString();
             String relationship = mEditRelationship.getText().toString();
             String description = mEditDescription.getText().toString();
 
             Family family = new Family(mId, name,relationship,description,url ) ;
-
             replyIntent.putExtra(EXTRA_REPLY_Family, family);
 
             setResult(2, replyIntent);
@@ -201,7 +208,6 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
             setResult(RESULT_OK, replyIntent);
         }
         finish();
-
     }
 
     @Override
@@ -235,6 +241,8 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         Intent intent = getIntent();
         String mode = intent.getStringExtra("mode");
+
+
         if(mode.equals("add")){
             Log.d(TAG, "onClick: " + "from add task");
             goToListActivity("add");
@@ -243,7 +251,34 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
             goToListActivity("edit");
 
         }
+
 //        Log.d(TAG, "onCreate: " + family.toString());
+    }
+
+
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radio_hour:
+                if (checked)
+                    interval = AlarmManager.INTERVAL_HOUR;
+                Log.d(TAG, "onRadioButtonClicked: hour clicked");
+                    break;
+            case R.id.radio_half_day:
+                if (checked)
+                    interval = AlarmManager.INTERVAL_HALF_DAY;
+                Log.d(TAG, "onRadioButtonClicked: half day");
+                    break;
+            case R.id.radio_day:
+                if (checked)
+                    interval = AlarmManager.INTERVAL_DAY;
+                Log.d(TAG, "onRadioButtonClicked: day");
+                    break;
+
+        }
     }
 
 

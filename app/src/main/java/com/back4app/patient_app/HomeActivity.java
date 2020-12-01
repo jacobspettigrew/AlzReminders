@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.back4app.patient_app.FamilyActivity.FamilyActivity;
 import com.back4app.patient_app.TasksActivity.MainActivity;
 import com.back4app.patient_app.models.Family;
+import com.parse.Parse;
 import com.parse.ParseObject;
 
 import java.util.Random;
@@ -31,7 +33,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     //DATABASE
     private ParseObject mPatientObject;
-    static SharedPreferences mPref;
+    SharedPreferences mPref;
     SharedPreferences.Editor mEditor;
     EditText mPatientidTextView;
 
@@ -40,6 +42,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
 
         //ASKING FOR READ PERMISSIONS
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
@@ -54,28 +58,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        mPatientidTextView = findViewById(R.id.patientIdHome);
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
         //DATABASE
         mPref = getApplicationContext().getSharedPreferences("Storage", 0);
         mEditor = mPref.edit();
+        containsUniqueId();
 
-        mPatientidTextView = findViewById(R.id.patientIdHome);
 
         //UI
         mCardViewTask = findViewById(R.id.cardViewTask);
         mCardViewReminder = findViewById(R.id.cardViewFamily);
         mCardViewTask.setOnClickListener(this);
         mCardViewReminder.setOnClickListener(this);
-
-        //CHECK IF UNIQUE ID EXISTS
-        containsUniqueId();
 
     }
 
@@ -136,7 +136,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void containsUniqueId() {
         String uniqueId = "";
 
-        if (!mPref.contains("uniqueId")) {
+        if(!isWifiConnected()){
+            mPatientidTextView.setText("please connect to wifi");
+        }
+        else if (!mPref.contains("uniqueId")) {
             mPatientObject = new ParseObject("Patient");
             mPatientObject.put("init", true);
             uniqueId = uniqueIdReturned();
@@ -149,6 +152,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mEditor.commit();
         } else {
             mPatientidTextView.setText(mPref.getString("uniqueId", "didn't get unique id"));
+
         }
+    }
+
+    public boolean isWifiConnected()
+    {
+        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return (cm != null) && (cm.getActiveNetworkInfo() != null) &&
+                (cm.getActiveNetworkInfo().getType() == 1);
     }
 }
