@@ -119,34 +119,14 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         //Notification
         createNotificationChannel();
         mTimePicker=findViewById(R.id.tp_timepicker);
-//         notificationBtn.setOnClickListener(new View.OnClickListener() {
-//             @Override
-//             public void onClick(View view) {
-//                 String str = "message";
-//                 Log.d(TAG, "onClick: is it clikcing");
-//
-//                 Intent intent = new Intent(NewFamilyActivity.this,ReminderBroadcast.class);
-//                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                 PendingIntent pendingIntent = PendingIntent.getActivity(NewFamilyActivity.this, 0, intent, 0);
-//
-//                 AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//
-//                 alarmMgr.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//                         SystemClock.elapsedRealtime() +
-//                                 3 * 1000, pendingIntent);
-//
-//             }
-//         });
-
 
     }
 
 
-    public void regist(View view) {
+    public void register(View view) {
 
         Intent intent = new Intent(this, ReminderBroadcast.class);
-        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0,intent, 0);
-
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent, 0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             hour=mTimePicker.getHour();
@@ -161,15 +141,14 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         alarmManager =
                 (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        // 지정한 시간에 매일 알림
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),  AlarmManager.INTERVAL_DAY, pIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 *10 , pendingIntent);
 
-    }// regist()..
+    }
 
-    public void unregist(View view) {
+    public void unregister(View view) {
         Intent intent = new Intent(this, ReminderBroadcast.class);
-        PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmManager.cancel(pIntent);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager.cancel(pendingIntent);
     }
 
     private void createNotificationChannel() {
