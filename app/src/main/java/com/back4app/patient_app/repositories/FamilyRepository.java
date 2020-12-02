@@ -31,7 +31,6 @@ public class FamilyRepository {
         RoomDatabase db = FamilyRoomDatabase.getDatabase(application);
         mFamilyDao = ((FamilyRoomDatabase) db).FamilyDao();
 
-
         mAllFamilies = mFamilyDao.getAllFamilies();
     }
 
@@ -68,7 +67,11 @@ public class FamilyRepository {
 
         @Override
         protected Void doInBackground(final Family... params) {
-            mAsyncTaskDao.insert(params[0]);
+            try {
+                mAsyncTaskDao.insert(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -84,7 +87,11 @@ public class FamilyRepository {
 
         @Override
         protected Void doInBackground(final Family... params) {
-            mAsyncTaskDao.update(params[0]);
+            try {
+                mAsyncTaskDao.update(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -121,7 +128,11 @@ public class FamilyRepository {
 
         @Override
         protected Void doInBackground(final Family... params) {
-            mAsyncTaskDao.deleteFamily(params[0]);
+            try {
+                mAsyncTaskDao.deleteFamily(params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }

@@ -10,20 +10,21 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.back4app.patient_app.models.Family;
-import com.back4app.patient_app.models.Task;
-import io.*;
+
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface FamilyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(Family family);
+    long insert(Family family)  throws Exception ;
     @Query("DELETE FROM family_table")
     void deleteAll();
     @Delete
-    void deleteFamily(Family family);
+    int deleteFamily(Family family) throws Exception ;
     @Update
-    void update(Family ... family);
+    int update(Family ... family) throws Exception ;
 
 
     @Query("SELECT * from family_table ORDER BY name ASC")
