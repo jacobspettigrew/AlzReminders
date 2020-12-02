@@ -41,8 +41,7 @@ public class FamilyDatabaseTest {
         db.close();
     }
 
-    @Test
-    public void writeFamilyAndReadInList() throws Exception {
+    @Test public void writeFamilyAndReadInList() throws Exception {
         Family family1 = new Family("a", "a","a","a");
         familyDao.insert(family1);
         List<Family> familyList = familyDao.getAllFamilies().getValue();

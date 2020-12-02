@@ -107,12 +107,10 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         Button mSaveProfileBtn = findViewById(R.id.save_profile);
         mSaveProfileBtn.setOnClickListener(this);
 
-
         //Notification
         createNotificationChannel();
         mTimePicker=findViewById(R.id.tp_timepicker);
     }
-
 
     public void register(View view) {
     createNotificationChannel();
@@ -148,12 +146,6 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(this, ReminderBroadcast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.cancel(pendingIntent);
-
-//            NotificationManager notificationManager =
-//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//// The id of the channel.
-//            String id = "my_channel_01";
-//            notificationManager.deleteNotificationChannel(id);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -180,7 +172,6 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
             intent.setType("image/");
             startActivityForResult(intent, SELECTED_PHOTO);
     }
-
 
     public void goToListActivity(String mode){
         Intent replyIntent = new Intent();
@@ -222,12 +213,9 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
                 inputStream = getContentResolver().openInputStream(imageUri);
                 Bitmap selectedImage = BitmapFactory.decodeStream(inputStream);
                 selectedImage = Bitmap.createScaledBitmap(selectedImage, 400,400,false);
-
                 imageGallery.setImageBitmap(selectedImage);
-
                 url = imageUri.toString();
             }
-
             catch (FileNotFoundException e){
                 e.printStackTrace();
             }
@@ -242,17 +230,13 @@ public class NewFamilyActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         String mode = intent.getStringExtra("mode");
 
-
         if(mode.equals("add")){
             Log.d(TAG, "onClick: " + "from add task");
             goToListActivity("add");
         }
         else if(mode.equals("edit")){
             goToListActivity("edit");
-
         }
-
-//        Log.d(TAG, "onCreate: " + family.toString());
     }
 
 
