@@ -60,26 +60,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         mPatientidTextView = findViewById(R.id.patientIdHome);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         //DATABASE
         mPref = getApplicationContext().getSharedPreferences("Storage", 0);
         mEditor = mPref.edit();
         containsUniqueId();
 
-
         //UI
         mCardViewTask = findViewById(R.id.cardViewTask);
         mCardViewReminder = findViewById(R.id.cardViewFamily);
         mCardViewTask.setOnClickListener(this);
         mCardViewReminder.setOnClickListener(this);
-
     }
-
-
 
 
     //LISTS OF FUNCTIONS TO GO TO DIFFERENT ACTIVITIES

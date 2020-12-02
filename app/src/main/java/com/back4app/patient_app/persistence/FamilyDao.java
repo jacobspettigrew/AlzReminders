@@ -18,13 +18,13 @@ import io.reactivex.rxjava3.core.Single;
 @Dao
 public interface FamilyDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(Family family)  throws Exception ;
+    void insert(Family family) ;
     @Query("DELETE FROM family_table")
     void deleteAll();
     @Delete
-    int deleteFamily(Family family) throws Exception ;
+    void deleteFamily(Family family) ;
     @Update
-    int update(Family ... family) throws Exception ;
+    void update(Family ... family) ;
 
 
     @Query("SELECT * from family_table ORDER BY name ASC")

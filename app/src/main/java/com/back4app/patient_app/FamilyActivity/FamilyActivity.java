@@ -54,14 +54,11 @@ public class FamilyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         mAdapter = new FamilyListAdapter(this);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         mAdapter.setOnItemClickListener(new FamilyListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -71,7 +68,6 @@ public class FamilyActivity extends AppCompatActivity {
                 Family family = mAdapter.getFamilyAtPosition(position);
                 intent.putExtra("mode", "edit" );
                 intent.putExtra("family", family);
-
                 startActivityForResult(intent, 1);
 
             }
