@@ -1,3 +1,25 @@
+/*
+
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     Actual queries to the database: add, delete, update and get Livedata
+    >
+Due date: < 2020/12/02 >
+FILE NAME:FamilyDao.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Initialize the database  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
+*/
+
 package com.back4app.patient_app.persistence;
 
 
@@ -25,7 +47,6 @@ public interface FamilyDao {
     void deleteFamily(Family family) ;
     @Update
     void update(Family ... family) ;
-
 
     @Query("SELECT * from family_table ORDER BY name ASC")
     LiveData<List<Family>> getAllFamilies();

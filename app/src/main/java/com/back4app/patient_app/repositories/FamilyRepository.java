@@ -1,3 +1,27 @@
+/*
+
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     The repository to control database
+     The repository serves as a path to the local and cloud database.
+    >
+Due date: < 2020/12/02 >
+FILE NAME:FamilyRepository.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Initialize the database  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
+*/
+
+
 package com.back4app.patient_app.repositories;
 
 import android.app.Application;
@@ -21,12 +45,14 @@ import java.util.List;
 import static com.parse.Parse.getApplicationContext;
 
 public class FamilyRepository {
+    //LiveData and Dao
     private FamilyDao mFamilyDao;
     private LiveData<List<Family>> mAllFamilies;
     private List<Family> mlistTasks;
     SharedPreferences mPref;
     SharedPreferences.Editor mEditor;
 
+    //Constructor to pass TaskDao and LiveData
     public FamilyRepository(Application application) {
         RoomDatabase db = FamilyRoomDatabase.getDatabase(application);
         mFamilyDao = ((FamilyRoomDatabase) db).FamilyDao();
@@ -38,6 +64,7 @@ public class FamilyRepository {
         return mAllFamilies;
     }
 
+    //insert,update and delete family
     public void insert (Family family) {
         new FamilyRepository.insertAsyncFamily(mFamilyDao).execute(family);
     }
@@ -50,20 +77,18 @@ public class FamilyRepository {
         new FamilyRepository.deleteAllFamiliesAsyncTask(mFamilyDao).execute();
     }
 
-    // Need to run off main thread
     public void deleteFamily(Family Family) {
         new FamilyRepository.deleteFamilyAsyncTask(mFamilyDao).execute(Family);
     }
 
 
+    //Async function to insert a family which runs in the background thread
     private static class insertAsyncFamily extends AsyncTask<Family, Void, Void> {
 
         private FamilyDao mAsyncTaskDao;
-
         insertAsyncFamily(FamilyDao dao) {
             mAsyncTaskDao = dao;
         }
-
 
         @Override
         protected Void doInBackground(final Family... params) {
@@ -76,10 +101,10 @@ public class FamilyRepository {
         }
     }
 
+    //Async function to update a family which runs in the background thread
     private static class updateAsyncFamily extends AsyncTask<Family, Void, Void> {
 
         private FamilyDao mAsyncTaskDao;
-
         updateAsyncFamily(FamilyDao dao) {
             mAsyncTaskDao = dao;
         }
@@ -99,9 +124,7 @@ public class FamilyRepository {
 
 
 
-    /**
-     * Delete all Tasks from the database (does not delete the table)
-     */
+    //Async function to delete all family which runs in the background thread
     private static class deleteAllFamiliesAsyncTask extends AsyncTask<Void, Void, Void> {
         private FamilyDao mAsyncTaskDao;
 
@@ -116,9 +139,7 @@ public class FamilyRepository {
         }
     }
 
-    /**
-     *  Delete a single Task from the database.
-     */
+    //Async function to delete a family which runs in the background thread
     private static class deleteFamilyAsyncTask extends AsyncTask<Family, Void, Void> {
         private FamilyDao mAsyncTaskDao;
 
