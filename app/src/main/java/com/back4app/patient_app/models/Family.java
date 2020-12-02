@@ -1,3 +1,26 @@
+/*
+
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     The model and entity class: The class includes all the necessary information stored for Family
+    >
+Due date: < 2020/12/02 >
+FILE NAME:Family.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Stores the actual tasks  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
+*/
+
+
 package com.back4app.patient_app.models;
 
 import android.os.Parcel;
@@ -19,14 +42,6 @@ public class Family implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @ColumnInfo(name = "name")
     @NonNull
@@ -62,6 +77,7 @@ public class Family implements Parcelable {
     };
 
 
+    //Constructors
     public Family( String name, String relationship, String description, String image_url) {
         this.mName = name;
         this.mRelationship = relationship;
@@ -87,6 +103,7 @@ public class Family implements Parcelable {
         return 0;
     }
 
+    //Used for passing between intents
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
@@ -96,6 +113,7 @@ public class Family implements Parcelable {
         parcel.writeString(mImage_url);
     }
 
+    //Getter and Setters
     public String getRelationship() {
         return this.mRelationship;
     }
@@ -116,12 +134,21 @@ public class Family implements Parcelable {
         return this.mImage_url;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 
     public void setImage_url(String image_url) {
         this.mImage_url = image_url;
     }
 
+
+    //Tostring method
     @Override
     public String toString() {
         return "Family{" +
@@ -133,6 +160,7 @@ public class Family implements Parcelable {
                 '}';
     }
 
+    //Used for testing
     @Override
     public boolean equals(@Nullable Object obj) {
         if(obj == null){

@@ -1,3 +1,25 @@
+/*
+
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     Roomdatbase to initialize the local database
+    >
+Due date: < 2020/12/02 >
+FILE NAME:TaskRoomDatabase.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Initialize the database  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
+*/
+
 package com.back4app.patient_app.persistence;
 
 import androidx.room.Database;

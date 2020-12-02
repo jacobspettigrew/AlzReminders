@@ -1,17 +1,27 @@
 /*
-HEADER
-FILE NAME:MainActivity.java
-TEAN NAME: Alzreminders
-BUGS:
-PEOPLE WHO WORKED ON: KYUNG CHEOL KOH ki
-PURPOSE:
-        GRABS THE DATA FROM THE BACK4APPS DATABASE
-        SHOW THE LIST OF TASKS FOR PATIENTS
-CODING STANDARD
-    NAME CONVENTION: CAMELCASE STARTING WITH LOWERCASE
-    GLOBAL VARIABLE: CAMELCASE STARTING WITH m
 
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     GRABS THE DATA FROM THE BACK4APPS DATABASE
+        SHOW THE LIST OF TASKS FOR PATIENTS
+    >
+Due date: < 2020/12/02 >
+FILE NAME: MainAcitivty.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Initialize the database  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
 */
+
+
 
 package com.back4app.patient_app.TasksActivity;
 

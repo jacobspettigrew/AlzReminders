@@ -1,3 +1,25 @@
+/*
+
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     TO ADD a new TASK to the Recyclerview
+    >
+Due date: < 2020/12/02 >
+FILE NAME: Home.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Initialize the database  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
+*/
+
 package com.back4app.patient_app;
 
 import android.Manifest;
@@ -43,23 +65,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
 
         //ASKING FOR READ PERMISSIONS
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED) {
-
         }
 
         else {
             ActivityCompat.requestPermissions(this, new String[]
                     { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-
         }
 
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
         mPatientidTextView = findViewById(R.id.patientIdHome);
 
         //DATABASE
@@ -88,6 +107,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+    //Onclick to go to different activites
     @Override
     public void onClick(View view) {
         Intent intent;
@@ -107,8 +127,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
-
 
 
     //GENERATE UNIQUE ID
@@ -132,13 +150,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if(!isWifiConnected()){
             mPatientidTextView.setText("please connect to wifi");
         }
+        //Store uniqueId in the local database
         else if (!mPref.contains("uniqueId")) {
+            //Create a parseobject with Patient and store the uniqueID
             mPatientObject = new ParseObject("Patient");
             mPatientObject.put("init", true);
             uniqueId = uniqueIdReturned();
             mPatientObject.put("uniqueId", uniqueId);
             mPatientObject.saveInBackground();
 
+            //Store it in the local storage here
             mEditor.putString("objectId", mPatientObject.getObjectId());
             mEditor.putString("uniqueId", uniqueId);
             mPatientidTextView.setText(uniqueId);
@@ -149,11 +170,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    //Check if wifi is connected
     public boolean isWifiConnected()
     {
-        ConnectivityManager cm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return (cm != null) && (cm.getActiveNetworkInfo() != null) &&
-                (cm.getActiveNetworkInfo().getType() == 1);
+        ConnectivityManager connectivityManagerm = (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (connectivityManagerm != null) && (connectivityManagerm.getActiveNetworkInfo() != null) &&
+                (connectivityManagerm.getActiveNetworkInfo().getType() == 1);
     }
 }

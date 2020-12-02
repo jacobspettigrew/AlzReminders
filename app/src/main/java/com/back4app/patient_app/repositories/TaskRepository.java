@@ -1,3 +1,26 @@
+/*
+
+HW 4
+
+Course: CMPT 385 Software Engineering
+Instructor: Dr. Herbert H. Tsang
+Description: <
+     The repository to control database
+     The repository serves as a path to the local and cloud database.
+    >
+Due date: < 2020/12/02 >
+FILE NAME:TaskRepository.java
+TEAM NAME: Alzreminders
+Author: < Kyung Cheol Koh >
+Input: < None>
+Output: < Initialize the database  >
+I pledge that I have completed the programming assignment independently.
+I have not copied the code from a student or any source.
+I have not given my code to any student.
+
+Sign here: __Kyung Cheol Koh______
+*/
+
 package com.back4app.patient_app.repositories;
 
 import android.app.Application;
@@ -21,12 +44,14 @@ import static com.parse.Parse.getApplicationContext;
 
 
 public class TaskRepository {
+    //LiveData and Dao
     private TaskDao mTaskDao;
     private LiveData<List<Task>> mAllTasks;
     private List<Task> mlistTasks;
     SharedPreferences mPref;
     SharedPreferences.Editor mEditor;
 
+    //Constructor to pass TaskDao and LiveData
     public TaskRepository(Application application) {
         TaskRoomDatabase db = TaskRoomDatabase.getDatabase(application);
         mTaskDao = db.TaskDao();
@@ -43,6 +68,7 @@ public class TaskRepository {
         new insertAsyncTask(mTaskDao).execute(Task);
     }
 
+    //Insert a task to the database
     public void insertToDatabase(Task task) throws ParseException {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Patient");
 
@@ -70,14 +96,14 @@ public class TaskRepository {
         new deleteAllTasksAsyncTask(mTaskDao).execute();
     }
 
-    // Need to run off main thread
+    // Run in the Background to Delete a task to the cloud database
     public void deleteTask(Task Task) {
         new deleteTaskAsyncTask(mTaskDao).execute(Task);
     }
 
     public void deleteTaskToDatabse(Task task,int position){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Patient");
-
+        //Get the patientId and search the  objectId in the Patient class
         query.whereEqualTo("uniqueId", mPref.getString("uniqueId", "didn't get unique id"));
         query.findInBackground(
                 new FindCallback<ParseObject>() {
@@ -107,14 +133,16 @@ public class TaskRepository {
         );
     }
 
+    //Get tasks fromo the cloud and insert to the local database
     public void getTaskFromDatabase(){
         deleteAll();
+        // Run in the Background to get tasks from the cloud database
         mPref = getApplicationContext().getSharedPreferences("Storage", 0);
         mEditor = mPref.edit();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Patient");
         query.whereEqualTo("uniqueId", mPref.getString("uniqueId", "didn't get unique id"));
-
+        //This query looks for all the arrays of tasks from the Data and insert it to the local database
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -139,7 +167,7 @@ public class TaskRepository {
     }
 
 
-
+    //Async class which runs in the database to insert a task
     private static class insertAsyncTask extends AsyncTask<Task, Void, Void> {
 
         private TaskDao mAsyncTaskDao;
@@ -156,9 +184,7 @@ public class TaskRepository {
         }
     }
 
-    /**
-     * Delete all Tasks from the database (does not delete the table)
-     */
+    //Delete all the tasks from the background
     private static class deleteAllTasksAsyncTask extends AsyncTask<Void, Void, Void> {
         private TaskDao mAsyncTaskDao;
 
@@ -173,9 +199,7 @@ public class TaskRepository {
         }
     }
 
-    /**
-     *  Delete a single Task from the database.
-     */
+    //Delete a single task from the background
     private static class deleteTaskAsyncTask extends AsyncTask<Task, Void, Void> {
         private TaskDao mAsyncTaskDao;
 
