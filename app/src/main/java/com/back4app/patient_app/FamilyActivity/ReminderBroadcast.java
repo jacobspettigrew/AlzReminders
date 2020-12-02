@@ -45,8 +45,8 @@ public class ReminderBroadcast extends BroadcastReceiver {
         String name = intent.getStringExtra("name");
         String description = intent.getStringExtra("description");
 
-        Toast.makeText(context, name, Toast.LENGTH_SHORT).show();    // AVD 확인용
-        Log.e("Alarm",name + description);    // 로그 확인용
+        Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+        Log.e("Alarm",name + description);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID1)
                 .setSmallIcon(R.drawable.ic_alarm)

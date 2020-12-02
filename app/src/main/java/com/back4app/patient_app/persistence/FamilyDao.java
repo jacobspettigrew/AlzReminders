@@ -26,7 +26,6 @@ public interface FamilyDao {
     @Update
     void update(Family ... family) ;
 
-
     @Query("SELECT * from family_table ORDER BY name ASC")
     LiveData<List<Family>> getAllFamilies();
 }
